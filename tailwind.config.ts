@@ -22,10 +22,13 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
+          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          light: "hsl(var(--secondary-light))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -46,6 +49,19 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          border: "hsl(var(--card-border))",
+        },
+        research: {
+          DEFAULT: "hsl(var(--research))",
+          foreground: "hsl(var(--research-foreground))",
+        },
+        collaboration: {
+          DEFAULT: "hsl(var(--collaboration))",
+          foreground: "hsl(var(--collaboration-foreground))",
+        },
+        publication: {
+          DEFAULT: "hsl(var(--publication))",
+          foreground: "hsl(var(--publication-foreground))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
