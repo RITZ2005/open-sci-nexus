@@ -1,15 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-if (!supabaseUrl) {
-  throw new Error('Missing VITE_SUPABASE_URL environment variable. Please configure your Supabase connection.')
-}
-
-if (!supabaseAnonKey) {
-  throw new Error('Missing VITE_SUPABASE_ANON_KEY environment variable. Please configure your Supabase connection.')
-}
+// Using public anon key and project URL provided by you
+const supabaseUrl = 'https://mikrhsbggtszwjuujjip.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pa3Joc2JnZ3RzendqdXVqamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2ODEyMTksImV4cCI6MjA3MzI1NzIxOX0.mGe3Nhlq8Cs3Ya_0YEQcnXFsw1VS3G4FypJzPjnpodA'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
