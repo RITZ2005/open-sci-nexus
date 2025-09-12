@@ -8,7 +8,9 @@ import {
   FileText,
   FolderOpen,
   Settings,
-  Microscope
+  Microscope,
+  Home,
+  UserPlus
 } from 'lucide-react';
 import {
   Sidebar,
@@ -24,8 +26,10 @@ import {
 
 const navigationItems = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
+  { title: 'Feed', url: '/feed', icon: Home },
+  { title: 'My Network', url: '/network', icon: Users },
   { title: 'Profile', url: '/profile', icon: User },
-  { title: 'Collaborators', url: '/collaborators', icon: Users },
+  { title: 'Collaborators', url: '/collaborators', icon: UserPlus },
   { title: 'Projects', url: '/projects', icon: FolderOpen },
   { title: 'Publish', url: '/publish', icon: FileText },
   { title: 'Settings', url: '/settings', icon: Settings },
