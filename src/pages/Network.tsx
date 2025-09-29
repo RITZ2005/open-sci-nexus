@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/contexts/AuthContext'
-import { supabase, User, Connection } from '@/lib/supabase'
+import { supabase, User, Connection, convertDatabaseUser } from '@/lib/supabase'
 import { Search, UserPlus, Users, CheckCircle, Clock, Mail } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
@@ -48,7 +48,8 @@ export default function Network() {
         .neq('id', user?.id)
 
       if (error) throw error
-      setAllUsers(data || [])
+      const convertedUsers = (data || []).map(convertDatabaseUser)
+      setAllUsers(convertedUsers)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -67,7 +68,13 @@ export default function Network() {
         .eq('status', 'accepted')
 
       if (error) throw error
-      setConnections(data || [])
+      const convertedConnections = (data || []).map(conn => ({
+        ...conn,
+        status: conn.status as 'pending' | 'accepted',
+        follower: convertDatabaseUser(conn.follower),
+        following: convertDatabaseUser(conn.following)
+      }))
+      setConnections(convertedConnections)
     } catch (error) {
       console.error('Error fetching connections:', error)
     }
@@ -86,7 +93,13 @@ export default function Network() {
         .eq('status', 'pending')
 
       if (error) throw error
-      setPendingRequests(data || [])
+      const convertedRequests = (data || []).map(conn => ({
+        ...conn,
+        status: conn.status as 'pending' | 'accepted',
+        follower: convertDatabaseUser(conn.follower),
+        following: convertDatabaseUser(conn.following)
+      }))
+      setPendingRequests(convertedRequests)
     } catch (error) {
       console.error('Error fetching pending requests:', error)
     }

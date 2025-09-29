@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/contexts/AuthContext'
-import { supabase, Post, User } from '@/lib/supabase'
+import { supabase, Post, User, convertDatabaseUser } from '@/lib/supabase'
 import { Heart, MessageCircle, Share2, Send, Camera, Users } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
@@ -38,7 +38,11 @@ export default function Feed() {
         .limit(20)
 
       if (error) throw error
-      setPosts(data || [])
+      const convertedPosts = (data || []).map(post => ({
+        ...post,
+        user: convertDatabaseUser(post.user)
+      }))
+      setPosts(convertedPosts)
     } catch (error) {
       console.error('Error fetching posts:', error)
       toast({
@@ -60,7 +64,8 @@ export default function Feed() {
         .limit(5)
 
       if (error) throw error
-      setSuggestions(data || [])
+      const convertedUsers = (data || []).map(convertDatabaseUser)
+      setSuggestions(convertedUsers)
     } catch (error) {
       console.error('Error fetching suggestions:', error)
     }

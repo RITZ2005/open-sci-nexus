@@ -1,27 +1,37 @@
-import { createClient } from '@supabase/supabase-js'
+// Re-export the supabase client from integrations to avoid duplicate instances
+export { supabase } from '@/integrations/supabase/client'
 
-// Using public anon key and project URL provided by you
-const supabaseUrl = 'https://mikrhsbggtszwjuujjip.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pa3Joc2JnZ3RzendqdXVqamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2ODEyMTksImV4cCI6MjA3MzI1NzIxOX0.mGe3Nhlq8Cs3Ya_0YEQcnXFsw1VS3G4FypJzPjnpodA'
+// Database Types - Imported from Supabase generated types
+import type { Database } from '@/integrations/supabase/types'
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+type DatabaseUser = Database['public']['Tables']['users']['Row']
+type DatabasePost = Database['public']['Tables']['posts']['Row']
+type DatabaseConnection = Database['public']['Tables']['connections']['Row']
 
-// Database Types
 export interface User {
   id: string
   email: string
   full_name: string
-  avatar_url?: string
-  title?: string
-  company?: string
-  location?: string
-  bio?: string
+  avatar_url?: string | null
+  title?: string | null
+  company?: string | null
+  location?: string | null
+  bio?: string | null
   skills: string[]
   education: any[]
   experience: any[]
   certifications: any[]
   created_at: string
+  updated_at?: string | null
 }
+
+// Helper function to convert database user to our User type
+export const convertDatabaseUser = (dbUser: DatabaseUser): User => ({
+  ...dbUser,
+  education: Array.isArray(dbUser.education) ? dbUser.education : [],
+  experience: Array.isArray(dbUser.experience) ? dbUser.experience : [],
+  certifications: Array.isArray(dbUser.certifications) ? dbUser.certifications : []
+})
 
 export interface Post {
   id: string
