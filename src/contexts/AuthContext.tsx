@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { User as SupabaseUser, Session } from '@supabase/supabase-js'
-import { supabase, User } from '@/lib/supabase'
+import { supabase } from '@/integrations/supabase/client'
+import { User } from '@/lib/supabase'
 
 interface AuthContextType {
   user: User | null
@@ -60,10 +61,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .from('users')
         .select('*')
         .eq('id', userId)
-        .single()
+        .maybeSingle()
 
       if (error) throw error
-      setUser(data)
+      
+      if (data) {
+        // User profile exists, convert types to match our User interface
+        const userProfile: User = {
+          ...data,
+          education: Array.isArray(data.education) ? data.education : [],
+          experience: Array.isArray(data.experience) ? data.experience : [],
+          certifications: Array.isArray(data.certifications) ? data.certifications : []
+        }
+        setUser(userProfile)
+      } else {
+        // User profile doesn't exist, create one
+        const { data: authUser } = await supabase.auth.getUser()
+        if (authUser.user) {
+          const { error: createError } = await supabase
+            .from('users')
+            .insert({
+              id: authUser.user.id,
+              email: authUser.user.email || '',
+              full_name: authUser.user.user_metadata?.full_name || 'User',
+              skills: [],
+              education: [],
+              experience: [],
+              certifications: [],
+            })
+          
+          if (!createError) {
+            // Fetch the newly created profile
+            await fetchUserProfile(userId)
+            return
+          }
+        }
+      }
     } catch (error) {
       console.error('Error fetching user profile:', error)
     } finally {
