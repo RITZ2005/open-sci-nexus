@@ -14,13 +14,222 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          post_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connections: {
+        Row: {
+          created_at: string | null
+          follower_id: string | null
+          following_id: string | null
+          id: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          follower_id?: string | null
+          following_id?: string | null
+          id?: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          follower_id?: string | null
+          following_id?: string | null
+          id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connections_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connections_following_id_fkey"
+            columns: ["following_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          comments_count: number | null
+          content: string
+          created_at: string | null
+          id: string
+          image_url: string | null
+          likes_count: number | null
+          user_id: string | null
+        }
+        Insert: {
+          comments_count?: number | null
+          content: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          likes_count?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          comments_count?: number | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          likes_count?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          certifications: Json | null
+          company: string | null
+          created_at: string | null
+          education: Json | null
+          email: string
+          experience: Json | null
+          full_name: string
+          id: string
+          location: string | null
+          skills: string[] | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          certifications?: Json | null
+          company?: string | null
+          created_at?: string | null
+          education?: Json | null
+          email: string
+          experience?: Json | null
+          full_name: string
+          id: string
+          location?: string | null
+          skills?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          certifications?: Json | null
+          company?: string | null
+          created_at?: string | null
+          education?: Json | null
+          email?: string
+          experience?: Json | null
+          full_name?: string
+          id?: string
+          location?: string | null
+          skills?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decrement_likes: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_likes: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
