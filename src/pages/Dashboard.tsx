@@ -6,8 +6,21 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Dashboard = () => {
+  const { user } = useAuth();
+
+  // Format user's display name with title
+  const getUserDisplayName = () => {
+    if (!user) return 'Guest';
+    
+    const title = user.title || 'Dr.'; // Default to Dr. if no title specified
+    const firstName = user.full_name?.split(' ')[0] || 'User';
+    
+    return `${title} ${firstName}`;
+  };
+
   const stats = [
     {
       title: 'Active Collaborators',
@@ -143,7 +156,7 @@ const Dashboard = () => {
         {/* Welcome Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Good morning, Dr. Jane</h1>
+            <h1 className="text-3xl font-bold mb-2 text-foreground">Good morning, {getUserDisplayName()}</h1>
             <p className="text-muted-foreground text-lg">Here's your research activity summary for today.</p>
           </div>
           <div className="flex items-center space-x-3 mt-4 lg:mt-0">
